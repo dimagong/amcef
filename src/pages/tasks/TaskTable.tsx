@@ -7,7 +7,7 @@ export type TaskListPropsType = {
 	onDeleteTask: (taskId: number) => void
 }
 
-export const TaskTable: FC<TaskListPropsType> = ({ tasks = [], onDeleteTask }) => {
+const TaskTable: FC<TaskListPropsType> = ({ tasks = [], onDeleteTask }) => {
 	return (
 		<div className='mt-9 max-h-screen h-4/6 overflow-y-scroll'>
 			<div className='relative overflow-x-auto shadow-md sm:rounded-lg'>
@@ -60,3 +60,5 @@ export const TaskTable: FC<TaskListPropsType> = ({ tasks = [], onDeleteTask }) =
 		</div>
 	)
 }
+
+export default TaskTable

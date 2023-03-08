@@ -2,9 +2,9 @@ import Head from "next/head"
 import Image from "next/image"
 import { Inter } from "next/font/google"
 import styles from "@/styles/Home.module.css"
-import { TaskCard, TaskList } from "./tasks"
 import { getTasksApi } from "../api/services"
 import { TaskPropsType } from "./tasks/TaskCard"
+import TaskList from "./tasks/TaskList"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -23,7 +23,6 @@ export default function Home({ tasks }: HomeProps) {
 			</Head>
 			<main className={styles.main}>
 				<TaskList tasks={tasks} />
-				{/* <TaskCard /> */}
 			</main>
 		</>
 	)

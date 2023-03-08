@@ -1,6 +1,6 @@
 import React from "react"
 
-export const CreateTask = ({ onCreateTask }: any) => {
+const CreateTask = ({ onCreateTask }: any) => {
 	return (
 		<button
 			onClick={onCreateTask}
@@ -10,3 +10,5 @@ export const CreateTask = ({ onCreateTask }: any) => {
 		</button>
 	)
 }
+
+export default CreateTask

@@ -1,4 +1,6 @@
-export const SearchTask = ({ onSearch }: any) => {
+import React from "react"
+
+const SearchTask = ({ onSearch }: any) => {
 	return (
 		<div className='block relative w-52'>
 			<button className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
@@ -29,3 +31,5 @@ export const SearchTask = ({ onSearch }: any) => {
 		</div>
 	)
 }
+
+export default SearchTask

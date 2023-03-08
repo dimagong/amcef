@@ -1,6 +1,6 @@
 import * as React from "react"
 
-export const SelectTask = ({ onSelectTackStatus }: any) => {
+const SelectTask = ({ onSelectTackStatus }: any) => {
 	return (
 		<div className='inline-block relative w-70 mr-2'>
 			<select
@@ -24,3 +24,5 @@ export const SelectTask = ({ onSelectTackStatus }: any) => {
 		</div>
 	)
 }
+
+export default SelectTask

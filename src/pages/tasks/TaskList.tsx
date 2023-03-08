@@ -1,13 +1,13 @@
 import React, { FC, useEffect, useReducer } from "react"
 import { Tab } from "@headlessui/react"
 import { TaskPropsType } from "./TaskCard"
-import { CreateTask } from "./CreateTask"
-import { SearchTask } from "./SearchTask"
-import { SelectTask } from "./SelectTask"
-import { TaskTable } from "./TaskTable"
 import { getTasksApi } from "../../api/services"
 import { ModalCreateTask } from "@/components/ModalCreateTask"
 import { useRouter } from "next/router"
+import CreateTask from "./CreateTask"
+import SearchTask from "./SearchTask"
+import SelectTask from "./SelectTask"
+import TaskTable from "./TaskTable"
 
 export type TaskListPropsType = {
 	tasks: TaskPropsType[]
@@ -64,7 +64,7 @@ const taskReducer = (state: TaskListPropsType, action: TaskAction) => {
 	}
 }
 
-export const TaskList: FC<Pick<TaskListPropsType, "tasks">> = ({ tasks }) => {
+const TaskList: FC<Pick<TaskListPropsType, "tasks">> = ({ tasks }) => {
 	const initialTaskState: TaskListPropsType = { tasks: [], selectedTasks: [], isOpen: false }
 
 	const [state, dispatch] = useReducer(taskReducer, initialTaskState)
@@ -137,3 +137,5 @@ export const TaskList: FC<Pick<TaskListPropsType, "tasks">> = ({ tasks }) => {
 		</div>
 	)
 }
+
+export default TaskList

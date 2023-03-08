@@ -34,3 +34,5 @@ export const TaskCard: FC<TaskPropsType> = (props) => {
 		</div>
 	)
 }
+
+export default TaskCard
