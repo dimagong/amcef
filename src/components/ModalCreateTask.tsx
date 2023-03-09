@@ -1,11 +1,12 @@
 import React from "react"
 import { useFormik } from "formik"
 import { createTaskApi } from "@/api/services"
+import * as Yup from "yup"
 
 type ModalCreateTaskProps = {
 	open: boolean
 	onClose: () => any
-	onCreatedTask: () => any
+	onUpdateListTasks: () => any
 }
 
 interface FormValues {
@@ -14,28 +15,17 @@ interface FormValues {
 	deadline: string
 }
 
-const validate = (values: FormValues) => {
-	const errors: any = {}
-	if (!values.title) {
-		errors.title = "Required"
-	} else if (values.title.length > 10) {
-		errors.title = "Must be 10 characters or less"
-	}
-	if (!values.description) {
-		errors.description = "Required"
-	} else if (values.description.length > 20) {
-		errors.description = "Must be 20 characters or less"
-	}
-	if (!values.deadline) {
-		errors.deadline = "Required"
-	} else if (values.deadline.length > 10) {
-		errors.deadline = "Must be 10 characters or less"
-	}
-	return errors
-}
+const validationSchema = Yup.object({
+	title: Yup.string().required("please enter a title"),
+	description: Yup.string().required("please enter a description"),
+	deadline: Yup.date()
+		.typeError("please enter a valid date")
+		.required()
+		.min("2023-03-07", "Date is too early"),
+})
 
 export const ModalCreateTask = (props: ModalCreateTaskProps) => {
-	const { open, onClose, onCreatedTask } = props
+	const { open, onClose, onUpdateListTasks } = props
 
 	const formik = useFormik({
 		initialValues: {
@@ -43,16 +33,15 @@ export const ModalCreateTask = (props: ModalCreateTaskProps) => {
 			description: "",
 			deadline: "",
 		},
-		validate,
+		validationSchema,
 		onSubmit: (values) => {
 			console.log("values", values)
 			const data = {
 				...values,
 				isCompleted: false,
-				deadline: new Date("05 November 2013 14:48").toISOString(),
 			}
 			createTaskApi(data)
-			onCreatedTask()
+			onUpdateListTasks()
 		},
 	})
 

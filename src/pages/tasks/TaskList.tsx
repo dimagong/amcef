@@ -21,6 +21,7 @@ enum TaskActionTypes {
 	SELECT_TASK = "SELECT_TASK",
 	SEARCH_TASK = "SEARCH_TASK",
 	UPDATE_TASK = "UPDATE_TASK",
+	OPEN_FORM_TASK = "OPEN_FORM_TASK",
 }
 
 interface TaskAction {
@@ -38,7 +39,7 @@ const taskReducer = (state: TaskListPropsType, action: TaskAction) => {
 			return {
 				...state,
 			}
-		case TaskActionTypes.CREATE_TASK:
+		case TaskActionTypes.OPEN_FORM_TASK:
 			return {
 				...state,
 				isOpen: payload,
@@ -58,6 +59,13 @@ const taskReducer = (state: TaskListPropsType, action: TaskAction) => {
 				...state,
 				tasks: [...payload],
 				selectedTasks: [...payload],
+			}
+		case TaskActionTypes.CREATE_TASK:
+			return {
+				...state,
+				tasks: [...payload],
+				selectedTasks: [...payload],
+				isOpen: false,
 			}
 		default:
 			return state
@@ -115,14 +123,16 @@ const TaskList: FC<Pick<TaskListPropsType, "tasks">> = ({ tasks }) => {
 	}
 
 	const onCreateTask = () => {
-		dispatch({ type: TaskActionTypes.CREATE_TASK, payload: true })
+		dispatch({ type: TaskActionTypes.OPEN_FORM_TASK, payload: true })
 	}
 	const onCloseModal = () => {
 		console.log("onclose")
-		dispatch({ type: TaskActionTypes.CREATE_TASK, payload: false })
+		dispatch({ type: TaskActionTypes.OPEN_FORM_TASK, payload: false })
 	}
-	const onCreatedTask = () => {
-		dispatch({ type: TaskActionTypes.CREATE_TASK, payload: false })
+	const onUpdateListTasks = async () => {
+		const res = await getTasksApi()
+		const tasks = res.data
+		dispatch({ type: TaskActionTypes.CREATE_TASK, payload: tasks })
 		return router.replace(router.asPath)
 	}
 	return (
@@ -133,7 +143,11 @@ const TaskList: FC<Pick<TaskListPropsType, "tasks">> = ({ tasks }) => {
 				<SearchTask onSearch={onSearch} />
 			</div>
 			<TaskTable tasks={state.selectedTasks} onDeleteTask={onDeleteTask} />
-			<ModalCreateTask open={state.isOpen} onClose={onCloseModal} onCreatedTask={onCreatedTask} />
+			<ModalCreateTask
+				open={state.isOpen}
+				onClose={onCloseModal}
+				onUpdateListTasks={onUpdateListTasks}
+			/>
 		</div>
 	)
 }
