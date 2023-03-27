@@ -1,4 +1,4 @@
-import { ActiveIcon, CompletedIcon, DeleteIcon } from "@/assets/icons"
+import { ActiveIcon, CompletedIcon, DeleteIcon, EditIcon } from "@/assets/icons"
 import React, { FC } from "react"
 import { TaskPropsType } from "./TaskCard"
 
@@ -32,6 +32,9 @@ const TaskTable: FC<TaskListPropsType> = ({ tasks = [], onDeleteTask }) => {
 							<th scope='col' className='px-6 py-3'>
 								Delete
 							</th>
+							<th scope='col' className='px-6 py-3'>
+								Edit
+							</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -51,6 +54,9 @@ const TaskTable: FC<TaskListPropsType> = ({ tasks = [], onDeleteTask }) => {
 								</td>
 								<td className='px-6 py-4'>
 									<DeleteIcon onDelete={() => onDeleteTask(task.id || 0)} />
+								</td>
+								<td className='px-6 py-4'>
+									<EditIcon onEdit={() => console.log("edit")} />
 								</td>
 							</tr>
 						))}

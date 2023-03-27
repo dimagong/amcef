@@ -4,7 +4,7 @@ import { Inter } from "next/font/google"
 import styles from "@/styles/Home.module.css"
 import { getTasksApi } from "../api/services"
 import { TaskPropsType } from "./tasks/TaskCard"
-import TaskList from "./tasks/TaskList"
+import TaskList from "./../components/TaskList"
 
 const inter = Inter({ subsets: ["latin"] })
 
