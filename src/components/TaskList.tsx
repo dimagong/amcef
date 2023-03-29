@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useReducer } from "react"
-import { Tab } from "@headlessui/react"
 import { TaskPropsType } from "../pages/tasks/TaskCard"
 import { getTasksApi } from "../api/services"
 import { ModalCreateTask } from "@/components/ModalCreateTask"
@@ -8,72 +7,18 @@ import CreateTask from "./CreateTask"
 import SearchTask from "./SearchTask"
 import SelectTask from "./SelectTask"
 import TaskTable from "./TaskTable"
+import { TaskActionTypes } from "@/types/TaskActionTypes"
+import { TaskAction } from "@/types/TaskActionInterface"
+import taskReducer from "@/utils/taskReducer"
 
-export type TaskListPropsType = {
+export type TaskListType = {
 	tasks: TaskPropsType[]
 	selectedTasks: TaskPropsType[]
 	isOpen: boolean
 }
-enum TaskActionTypes {
-	ADD_TASK = "ADD_TASK",
-	DELETE_TASK = "DELETE_TASK",
-	CREATE_TASK = "CREATE_TASK",
-	SELECT_TASK = "SELECT_TASK",
-	SEARCH_TASK = "SEARCH_TASK",
-	UPDATE_TASK = "UPDATE_TASK",
-	OPEN_FORM_TASK = "OPEN_FORM_TASK",
-}
 
-interface TaskAction {
-	type: TaskActionTypes
-	payload: any
-}
-const taskReducer = (state: TaskListPropsType, action: TaskAction) => {
-	const { type, payload } = action
-	switch (type) {
-		case TaskActionTypes.ADD_TASK:
-			return {
-				...state,
-			}
-		case TaskActionTypes.DELETE_TASK:
-			return {
-				...state,
-			}
-		case TaskActionTypes.OPEN_FORM_TASK:
-			return {
-				...state,
-				isOpen: payload,
-			}
-		case TaskActionTypes.SEARCH_TASK:
-			return {
-				...state,
-				selectedTasks: [...payload],
-			}
-		case TaskActionTypes.SELECT_TASK:
-			return {
-				...state,
-				selectedTasks: [...payload],
-			}
-		case TaskActionTypes.UPDATE_TASK:
-			return {
-				...state,
-				tasks: [...payload],
-				selectedTasks: [...payload],
-			}
-		case TaskActionTypes.CREATE_TASK:
-			return {
-				...state,
-				tasks: [...payload],
-				selectedTasks: [...payload],
-				isOpen: false,
-			}
-		default:
-			return state
-	}
-}
-
-const TaskList: FC<Pick<TaskListPropsType, "tasks">> = ({ tasks }) => {
-	const initialTaskState: TaskListPropsType = { tasks: [], selectedTasks: [], isOpen: false }
+const TaskList: FC<Pick<TaskListType, "tasks">> = ({ tasks }) => {
+	const initialTaskState: TaskListType = { tasks: [], selectedTasks: [], isOpen: false }
 
 	const [state, dispatch] = useReducer(taskReducer, initialTaskState)
 	const router = useRouter()

@@ -13,7 +13,7 @@ export type HomeProps = {
 	tasks: TaskPropsType[]
 }
 
-export default function Home({ tasks }: HomeProps) {
+const HomePage = ({ tasks }: HomeProps) => {
 	return (
 		<React.Profiler id='Home-page' onRender={() => console.log("Home page")}>
 			<Head>
@@ -29,15 +29,7 @@ export default function Home({ tasks }: HomeProps) {
 	)
 }
 
-// export async function getStaticProps() {
-// 	const res = await getTasksApi()
-// 	const tasks = res.data
-// 	return {
-// 		props: {
-// 			tasks,
-// 		},
-// 	}
-// }
+export default HomePage
 
 export async function getServerSideProps() {
 	const res = await getTasksApi()
@@ -48,3 +40,13 @@ export async function getServerSideProps() {
 		},
 	}
 }
+
+// export async function getStaticProps() {
+// 	const res = await getTasksApi()
+// 	const tasks = res.data
+// 	return {
+// 		props: {
+// 			tasks,
+// 		},
+// 	}
+// }
