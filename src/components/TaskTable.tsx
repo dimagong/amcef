@@ -1,6 +1,6 @@
 import { ActiveIcon, CompletedIcon, DeleteIcon, EditIcon } from "@/assets/icons"
 import React, { FC } from "react"
-import { TaskPropsType } from "./TaskCard"
+import { TaskPropsType } from "./../pages/tasks/TaskCard"
 
 export type TaskListPropsType = {
 	tasks: TaskPropsType[]
