@@ -29,17 +29,7 @@ export default function Home({ tasks }: HomeProps) {
 	)
 }
 
-export async function getStaticProps() {
-	const res = await getTasksApi()
-	const tasks = res.data
-	return {
-		props: {
-			tasks,
-		},
-	}
-}
-
-// export async function getServerSideProps() {
+// export async function getStaticProps() {
 // 	const res = await getTasksApi()
 // 	const tasks = res.data
 // 	return {
@@ -48,3 +38,13 @@ export async function getStaticProps() {
 // 		},
 // 	}
 // }
+
+export async function getServerSideProps() {
+	const res = await getTasksApi()
+	const tasks = res.data
+	return {
+		props: {
+			tasks,
+		},
+	}
+}
