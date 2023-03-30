@@ -2,6 +2,7 @@ import React from "react"
 import { useFormik } from "formik"
 import { createTaskApi } from "@/api/services"
 import * as Yup from "yup"
+import moment from "moment"
 
 type ModalCreateTaskProps = {
 	open: boolean
@@ -21,7 +22,8 @@ const validationSchema = Yup.object({
 	deadline: Yup.date()
 		.typeError("please enter a valid date")
 		.required()
-		.min("2023-03-07", "Date is too early"),
+		.min(moment().subtract(1, "day"), "The date is too early")
+		.max(moment().add(1, "month"), "The date is too late"),
 })
 
 export const ModalCreateTask = (props: ModalCreateTaskProps) => {

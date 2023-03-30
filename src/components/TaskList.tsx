@@ -8,7 +8,6 @@ import SearchTask from "./SearchTask"
 import SelectTask from "./SelectTask"
 import TaskTable from "./TaskTable"
 import { TaskActionTypes } from "@/types/TaskActionTypes"
-import { TaskAction } from "@/types/TaskActionInterface"
 import taskReducer from "@/utils/taskReducer"
 
 export type TaskListType = {
