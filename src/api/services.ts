@@ -1,3 +1,4 @@
+import { TaskPropsType } from "@/pages/tasks/[id]";
 import axios from "axios";
 import React from "react";
 
@@ -26,7 +27,7 @@ export const serviceApi = {
     delete: (args: any) => instance.delete(args).then(response => response),
     head: (args: any) => instance.head(args).then(response => response),
     post: (endpoint: any, data: any) => instance.post(endpoint, data).then(response => response),
-    put: (args: any) => instance.put(args).then(response => response),
+    put: (endpoint: any, data: any) => instance.put(endpoint, data).then(response => response),
     patch: (args: any) => instance.patch(args).then(response => response),
   };
   
@@ -34,10 +35,14 @@ export const  getTasksApi = () => {
     return serviceApi.get("/tasks")
 }
 
-export const createTaskApi = (data: any) => {
+export const createTaskApi = (data: TaskPropsType) => {
     return serviceApi.post("/tasks", data)
 }
 
-export const  getTaskByIDApi = (taskId: string) => {
+export const  getTaskByIDApi = (taskId: string | number) => {
     return serviceApi.get(`/tasks/${taskId}`)
+}
+
+export const updateTaskApi = (id: string | number, data: TaskPropsType) => {
+    return serviceApi.put(`/tasks/${id}`, data)
 }
