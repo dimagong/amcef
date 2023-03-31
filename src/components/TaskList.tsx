@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useReducer } from "react"
-import { TaskPropsType } from "../pages/tasks/TaskCard"
+import { TaskPropsType } from "../pages/tasks/[id]"
 import { getTasksApi } from "../api/services"
 import { ModalCreateTask } from "@/components/ModalCreateTask"
 import { useRouter } from "next/router"
@@ -69,6 +69,11 @@ const TaskList: FC<Pick<TaskListType, "tasks">> = ({ tasks }) => {
 	const onCreateTask = () => {
 		dispatch({ type: TaskActionTypes.OPEN_FORM_TASK, payload: true })
 	}
+
+	const onEditeTask = (taskId: number): void => {
+		console.log("edite id :", taskId)
+		router.push(`/tasks/${taskId}`)
+	}
 	const onCloseModal = () => {
 		console.log("onclose")
 		dispatch({ type: TaskActionTypes.OPEN_FORM_TASK, payload: false })
@@ -77,7 +82,7 @@ const TaskList: FC<Pick<TaskListType, "tasks">> = ({ tasks }) => {
 		const res = await getTasksApi()
 		const tasks = res.data
 		dispatch({ type: TaskActionTypes.CREATE_TASK, payload: tasks })
-		return router.replace(router.asPath)
+		//return router.replace(router.asPath)
 	}
 	return (
 		<div className='w-full max-w-4xl h-screen '>
@@ -86,7 +91,11 @@ const TaskList: FC<Pick<TaskListType, "tasks">> = ({ tasks }) => {
 				<SelectTask onSelectTackStatus={onSelectTackStatus} />
 				<SearchTask onSearch={onSearch} />
 			</div>
-			<TaskTable tasks={state.selectedTasks} onDeleteTask={onDeleteTask} />
+			<TaskTable
+				tasks={state.selectedTasks}
+				onDeleteTask={onDeleteTask}
+				onEditeTask={onEditeTask}
+			/>
 			<ModalCreateTask
 				open={state.isOpen}
 				onClose={onCloseModal}

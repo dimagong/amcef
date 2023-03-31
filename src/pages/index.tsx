@@ -3,7 +3,7 @@ import Image from "next/image"
 import { Inter } from "next/font/google"
 import styles from "@/styles/Home.module.css"
 import { getTasksApi } from "../api/services"
-import { TaskPropsType } from "./tasks/TaskCard"
+import { TaskPropsType } from "./tasks/[id]"
 import TaskList from "./../components/TaskList"
 import React from "react"
 

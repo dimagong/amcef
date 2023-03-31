@@ -1,13 +1,14 @@
 import { ActiveIcon, CompletedIcon, DeleteIcon, EditIcon } from "@/assets/icons"
 import React, { FC } from "react"
-import { TaskPropsType } from "./../pages/tasks/TaskCard"
+import { TaskPropsType } from "../pages/tasks/[id]"
 
 export type TaskListPropsType = {
 	tasks: TaskPropsType[]
 	onDeleteTask: (taskId: number) => void
+	onEditeTask: (taskId: number) => void
 }
 
-const TaskTable: FC<TaskListPropsType> = ({ tasks = [], onDeleteTask }) => {
+const TaskTable: FC<TaskListPropsType> = ({ tasks = [], onDeleteTask, onEditeTask }) => {
 	return (
 		<div className='mt-9 max-h-screen h-4/6 overflow-y-scroll'>
 			<div className='relative overflow-x-auto shadow-md sm:rounded-lg'>
@@ -56,7 +57,7 @@ const TaskTable: FC<TaskListPropsType> = ({ tasks = [], onDeleteTask }) => {
 									<DeleteIcon onDelete={() => onDeleteTask(task.id || 0)} />
 								</td>
 								<td className='px-6 py-4'>
-									<EditIcon onEdit={() => console.log("edit")} />
+									<EditIcon onEdit={() => onEditeTask(task.id || 0)} />
 								</td>
 							</tr>
 						))}

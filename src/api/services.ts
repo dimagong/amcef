@@ -3,7 +3,7 @@ import React from "react";
 
 
 const instance = axios.create({
-    baseURL: "https://640314fd302b5d671c467d24.mockapi.io",
+    baseURL: "https://640314fd302b5d671c467d24.mockapi.io/api/pages",
     headers: { "Content-Type": "application/json" },
 });
 
@@ -31,10 +31,13 @@ export const serviceApi = {
   };
   
 export const  getTasksApi = () => {
-    return serviceApi.get("/api/todo/tasks")
+    return serviceApi.get("/tasks")
 }
 
 export const createTaskApi = (data: any) => {
-    return serviceApi.post("/api/todo/tasks", data)
+    return serviceApi.post("/tasks", data)
 }
 
+export const  getTaskByIDApi = (taskId: string) => {
+    return serviceApi.get(`/tasks/${taskId}`)
+}
