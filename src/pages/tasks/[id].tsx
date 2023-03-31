@@ -136,24 +136,3 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		},
 	}
 }
-
-//* <div
-// 	style={{
-// 		minHeight: 200,
-// 		border: "2px solid blue",
-// 		borderRadius: 2,
-// 		padding: 5,
-// 		display: "flex",
-// 		flexDirection: "column",
-// 		alignItems: "center",
-// 		justifyContent: "space-around",
-// 	}}
-// >
-// 	<h1>{title}</h1>
-// 	<h2 className='text-3xl font-bold underline'>{description}</h2>
-// 	{/* <div>Deadline: {deadline.toLocaleString()}</div> */}
-
-// <h2>
-// 	<Link href='/'>Back to home</Link>
-// </h2>
-//</div> */}
