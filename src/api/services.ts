@@ -24,7 +24,7 @@ instance.interceptors.response.use(response => response, responseRejectIntercept
 
 export const serviceApi = {
     get: (endpoint: any) => instance.get(endpoint).then(response => response),
-    delete: (args: any) => instance.delete(args).then(response => response),
+    delete: (endpoint: any) => instance.delete(endpoint).then(response => response),
     head: (args: any) => instance.head(args).then(response => response),
     post: (endpoint: any, data: any) => instance.post(endpoint, data).then(response => response),
     put: (endpoint: any, data: any) => instance.put(endpoint, data).then(response => response),
@@ -45,4 +45,8 @@ export const  getTaskByIDApi = (taskId: string | number) => {
 
 export const updateTaskApi = (id: string | number, data: TaskPropsType) => {
     return serviceApi.put(`/tasks/${id}`, data)
+}
+
+export const deleteTaskApi = (id: string | number) => {
+    return serviceApi.delete(`/tasks/${id}`)
 }

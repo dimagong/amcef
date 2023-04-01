@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useReducer } from "react"
 import { TaskPropsType } from "../pages/tasks/[id]"
-import { getTasksApi } from "../api/services"
+import { deleteTaskApi, getTasksApi } from "../api/services"
 import { ModalCreateTask } from "@/components/ModalCreateTask"
 import { useRouter } from "next/router"
 import CreateTask from "./CreateTask"
@@ -62,8 +62,9 @@ const TaskList: FC<Pick<TaskListType, "tasks">> = ({ tasks }) => {
 			dispatch({ type: TaskActionTypes.SEARCH_TASK, payload: [...state.tasks] })
 		}
 	}
-	const onDeleteTask = (taskId: number) => {
-		console.log("taskId", taskId)
+	const onDeleteTask = async (taskId: number) => {
+		await deleteTaskApi(taskId)
+		onUpdateListTasks()
 	}
 
 	const onCreateTask = () => {
@@ -71,11 +72,9 @@ const TaskList: FC<Pick<TaskListType, "tasks">> = ({ tasks }) => {
 	}
 
 	const onEditeTask = (taskId: number): void => {
-		console.log("edite id :", taskId)
 		router.push(`/tasks/${taskId}`)
 	}
 	const onCloseModal = () => {
-		console.log("onclose")
 		dispatch({ type: TaskActionTypes.OPEN_FORM_TASK, payload: false })
 	}
 	const onUpdateListTasks = async () => {
