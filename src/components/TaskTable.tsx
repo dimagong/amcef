@@ -28,7 +28,7 @@ const TaskTable: FC<TaskListPropsType> = ({ tasks = [], onDeleteTask, onEditeTas
 								Deadline
 							</th>
 							<th scope='col' className='px-6 py-3'>
-								Active/Completed Delete
+								Active/Completed
 							</th>
 							<th scope='col' className='px-6 py-3'>
 								Delete
@@ -40,7 +40,7 @@ const TaskTable: FC<TaskListPropsType> = ({ tasks = [], onDeleteTask, onEditeTas
 					</thead>
 					<tbody>
 						{tasks.map((task, idx) => (
-							<tr key={idx} className='bg-white border-b dark:bg-gray-900 dark:border-gray-700'>
+							<tr key={task.id} className='bg-white border-b dark:bg-gray-900 dark:border-gray-700'>
 								<th
 									scope='row'
 									className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'
