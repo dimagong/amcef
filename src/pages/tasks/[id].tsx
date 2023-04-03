@@ -3,6 +3,7 @@ import { useRouter } from "next/router"
 import { GetStaticProps, GetStaticPaths } from "next"
 import Link from "next/link"
 import { getTaskByIDApi, getTasksApi, updateTaskApi } from "@/api/services"
+import moment from "moment"
 
 export type TaskPropsType = {
 	id: number
@@ -41,7 +42,7 @@ export const TaskCard = (props: { task: TaskPropsType; hasError: boolean }) => {
 	}
 	return (
 		<div className='w-full h-screen flex  justify-center items-center'>
-			<div className='overflow-hidden bg-white shadow sm:rounded-lg max-w-xl'>
+			<div className='w-2/5 overflow-hidden bg-white shadow sm:rounded-lg '>
 				<div className='px-4 py-5 sm:px-6'>
 					<h3 className='text-base font-semibold leading-6 text-gray-900'>The task N {id}</h3>
 					<p className='mt-1 max-w-2xl text-sm text-gray-500'>Task details</p>
@@ -64,7 +65,6 @@ export const TaskCard = (props: { task: TaskPropsType; hasError: boolean }) => {
 								onChange={onChange}
 								name='description'
 								rows={5}
-								// type='text'
 								className='mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0'
 								value={taskDetails.description}
 							/>
@@ -76,7 +76,7 @@ export const TaskCard = (props: { task: TaskPropsType; hasError: boolean }) => {
 								name='deadline'
 								type='text'
 								className='mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0'
-								value={taskDetails.deadline}
+								value={`${moment(taskDetails.deadline).format("DD-MM-YYYY")}`}
 							/>
 						</div>
 						<div className='bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
