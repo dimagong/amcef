@@ -84,22 +84,24 @@ const TaskList: FC<Pick<TaskListType, "tasks">> = ({ tasks }) => {
 		//return router.replace(router.asPath)
 	}
 	return (
-		<div className='w-full max-w-4xl h-screen '>
-			<div className='flex justify-start pb-1 fixed'>
-				<CreateTask onCreateTask={onCreateTask} />
-				<SelectTask onSelectTackStatus={onSelectTackStatus} />
-				<SearchTask onSearch={onSearch} />
+		<div className='w-full max-w-6xl h-screen flex flex-col justify-center overflow-y-hidden'>
+			<div>
+				<div className='flex flex-row justify-start pb-1 fixed'>
+					<CreateTask onCreateTask={onCreateTask} />
+					<SelectTask onSelectTackStatus={onSelectTackStatus} />
+					<SearchTask onSearch={onSearch} />
+				</div>
+				<TaskTable
+					tasks={state.selectedTasks}
+					onDeleteTask={onDeleteTask}
+					onEditeTask={onEditeTask}
+				/>
+				<ModalCreateTask
+					open={state.isOpen}
+					onClose={onCloseModal}
+					onUpdateListTasks={onUpdateListTasks}
+				/>
 			</div>
-			<TaskTable
-				tasks={state.selectedTasks}
-				onDeleteTask={onDeleteTask}
-				onEditeTask={onEditeTask}
-			/>
-			<ModalCreateTask
-				open={state.isOpen}
-				onClose={onCloseModal}
-				onUpdateListTasks={onUpdateListTasks}
-			/>
 		</div>
 	)
 }

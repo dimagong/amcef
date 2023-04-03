@@ -10,16 +10,12 @@ export type TaskPropsType = {
 	description: string
 	deadline: string
 	isCompleted: boolean
+	avatar: string
+	assigned: string
 }
 
 export const TaskCard = (props: { task: TaskPropsType; hasError: boolean }) => {
-	const {
-		title = "No Title",
-		id,
-		description = "No Description",
-		deadline,
-		isCompleted,
-	} = props.task
+	const { id } = props.task
 	const router = useRouter()
 	const [taskDetails, upTaskDetails] = useState<TaskPropsType>(() => {
 		return { ...props.task }
@@ -39,9 +35,6 @@ export const TaskCard = (props: { task: TaskPropsType; hasError: boolean }) => {
 		//taskDetails
 		updateTaskApi(taskDetails.id, { ...taskDetails })
 	}
-
-	// const { id } = router.query
-	// console.log("Page ID", id)
 
 	if (router.isFallback) {
 		return <h1>Loading...</h1>
