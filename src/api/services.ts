@@ -35,7 +35,7 @@ export const  getTasksApi = () => {
     return serviceApi.get("/tasks")
 }
 
-export const createTaskApi = (data: TaskPropsType) => {
+export const createTaskApi = (data: Partial<TaskPropsType>) => {
     return serviceApi.post("/tasks", data)
 }
 
