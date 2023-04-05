@@ -1,14 +1,17 @@
 import React, { FC, useEffect, useReducer } from "react"
-import { TaskPropsType } from "../pages/tasks/[id]"
-import { deleteTaskApi, getTasksApi } from "../api/services"
-import { ModalCreateTask } from "@/components/ModalCreateTask"
 import { useRouter } from "next/router"
+
+import { deleteTaskApi, getTasksApi } from "../api/services"
+
 import CreateTask from "./CreateTask"
 import SearchTask from "./SearchTask"
 import SelectTask from "./SelectTask"
 import TaskTable from "./TaskTable"
+import { ModalCreateTask } from "@/components/ModalCreateTask"
+
 import { TaskActionTypes } from "@/types/TaskActionTypes"
 import taskReducer from "@/utils/taskReducer"
+import { TaskPropsType } from "@/types"
 
 export type TaskListType = {
 	tasks: TaskPropsType[]

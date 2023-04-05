@@ -1,9 +1,9 @@
 import React, { FC } from "react"
 import classnames from "classnames"
 
-import { ActiveIcon, CompletedIcon, DeleteIcon, EditIcon } from "@/assets/icons"
+import Image from "next/image"
 
-import { TaskPropsType } from "../pages/tasks/[id]"
+import { TaskPropsType } from "@/types"
 
 export type TaskListPropsType = {
 	tasks: TaskPropsType[]
@@ -45,7 +45,7 @@ const TaskTable: FC<TaskListPropsType> = ({ tasks = [], onDeleteTask, onEditeTas
 					<tbody>
 						{tasks.map((task, idx) => (
 							<tr
-								key={task.id}
+								key={task?.id}
 								className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600'
 							>
 								<th
@@ -54,23 +54,31 @@ const TaskTable: FC<TaskListPropsType> = ({ tasks = [], onDeleteTask, onEditeTas
 								>
 									{idx + 1}
 								</th>
-								<td className='px-6 py-4'>{task.title}</td>
+								<td className='px-6 py-4'>{task?.title}</td>
 								<th scope='row' className='text-gray-900 whitespace-nowrap dark:text-white'>
 									<div className='flex items-center h-100'>
+										{/* <Image
+											//loader={myLoader}
+											src={task?.avatar}
+											alt={task?.assigned}
+											className='rounded-full'
+											width={10}
+											height={10}
+										/> */}
 										<img className='w-10 h-10 rounded-full' src={task.avatar} alt={task.assigned} />
 										<div className='pl-3'>
-											<div className='text-base font-semibold'>{task.assigned}</div>
+											<div className='text-base font-semibold'>{task?.assigned}</div>
 										</div>
 									</div>
 								</th>
-								<td className='px-6 py-4'>{task.description}</td>
+								<td className='px-6 py-4'>{task?.description}</td>
 								<td className='px-6 py-4'>{new Date(task.deadline).toLocaleDateString()}</td>
 								<td className='px-6 py-4'>
 									<div className='flex items-center'>
 										<div
 											className={classnames("h-2.5 w-2.5 rounded-full  mr-2", {
-												"bg-green-500": task.isCompleted,
-												"bg-red-500": !task.isCompleted,
+												"bg-green-500": task?.isCompleted,
+												"bg-red-500": !task?.isCompleted,
 											})}
 										/>
 										{task.isCompleted ? (
@@ -82,13 +90,13 @@ const TaskTable: FC<TaskListPropsType> = ({ tasks = [], onDeleteTask, onEditeTas
 								</td>
 								<td className='px-6 py-4 '>
 									<button
-										onClick={() => onEditeTask(task.id)}
+										onClick={() => onEditeTask(task?.id)}
 										className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
 									>
 										Edit
 									</button>
 									<button
-										onClick={() => onDeleteTask(task.id)}
+										onClick={() => onDeleteTask(task?.id)}
 										className='mt-4 font-medium text-red-600 dark:text-red-500 hover:underline'
 									>
 										Delete
