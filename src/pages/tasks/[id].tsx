@@ -1,11 +1,10 @@
 import React, { FC, useState } from "react"
 import { useRouter } from "next/router"
 import { GetStaticProps, GetStaticPaths } from "next"
-import Link from "next/link"
 import { getTaskByIDApi, getTasksApi, updateTaskApi } from "@/api/services"
 import moment from "moment"
 
-export type TaskPropsType = {
+type TaskPropsType = {
 	id: number
 	title: string
 	description: string
@@ -15,7 +14,19 @@ export type TaskPropsType = {
 	assigned: string
 }
 
-export const TaskCard = (props: { task: TaskPropsType; hasError: boolean }) => {
+const initialTask = {
+	id: 0,
+	title: "No title",
+	description: "No description",
+	deadline: `1-01-2024`,
+	isCompleted: false,
+	avatar: "",
+	assigned: "No assigned",
+}
+
+const TaskCard = (
+	props: { task: TaskPropsType; hasError: boolean } = { task: initialTask, hasError: false }
+) => {
 	const { id } = props.task
 	const router = useRouter()
 	const [taskDetails, upTaskDetails] = useState<TaskPropsType>(() => {
