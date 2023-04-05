@@ -4,6 +4,7 @@ import classnames from "classnames"
 import Image from "next/image"
 
 import { TaskPropsType } from "@/types"
+import { UserIcon } from "@/assets/icons/UserIcon"
 
 export type TaskListPropsType = {
 	tasks: TaskPropsType[]
@@ -57,16 +58,16 @@ const TaskTable: FC<TaskListPropsType> = ({ tasks = [], onDeleteTask, onEditeTas
 								<td className='px-6 py-4'>{task?.title}</td>
 								<th scope='row' className='text-gray-900 whitespace-nowrap dark:text-white'>
 									<div className='flex items-center h-100'>
-										{/* <Image
-											//loader={myLoader}
+										<Image
+											placeholder='blur'
+											blurDataURL='./../assets/icons/UserIcon.tsx'
 											src={task?.avatar}
 											alt={task?.assigned}
 											className='rounded-full'
-											width={10}
-											height={10}
-										/> */}
-										<img className='w-10 h-10 rounded-full' src={task.avatar} alt={task.assigned} />
-										<div className='pl-3'>
+											width={25}
+											height={25}
+										/>
+										<div className='pl-3 pr-5'>
 											<div className='text-base font-semibold'>{task?.assigned}</div>
 										</div>
 									</div>
