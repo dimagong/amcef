@@ -1,6 +1,7 @@
-import { TaskPropsType } from "@/pages/tasks/[id]";
+
+import { TaskPropsType } from "@/types";
 import axios from "axios";
-import React from "react";
+
 
 
 const instance = axios.create({
@@ -13,12 +14,15 @@ const instance = axios.create({
 const responseRejectInterceptor = (err: any) => {
     //todo handling error 
     if (err.response && err.response.status >= 400 && err.response.status <= 500) {
-        return Promise.reject(new Error('Wrong status code'))
+        const message = err.response.message ?? err.message ??  'Wrong status code'
+        return Promise.reject(new Error(message))
     } else {
         return Promise.reject(new Error('Something was wrong'))
-      }
+    }
 
-  };
+};
+
+
 
 instance.interceptors.response.use(response => response, responseRejectInterceptor);
 
@@ -35,7 +39,7 @@ export const  getTasksApi = () => {
     return serviceApi.get("/tasks")
 }
 
-export const createTaskApi = (data: Partial<TaskPropsType>) => {
+export const createTaskApi = (data: Partial<TaskPropsType>)  => {
     return serviceApi.post("/tasks", data)
 }
 
