@@ -35,7 +35,6 @@ const TaskCard = (
 
 	const onChange = (event: React.ChangeEvent<any>) => {
 		const { value, name } = event.target
-		console.log("event.target", event.target)
 		if (name === "status") {
 			let status = value === "false" ? true : false
 			upTaskDetails((prevState) => ({ ...prevState, isCompleted: status }))
