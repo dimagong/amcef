@@ -14,7 +14,7 @@ type TaskPropsType = {
 	assigned: string
 }
 
-const initialTask = {
+export const initialTask = {
 	id: 0,
 	title: "No title",
 	description: "No description",
@@ -48,13 +48,15 @@ const TaskCard = (
 	}
 
 	if (router.isFallback) {
-		return <h1>Loading...</h1>
+		return <h1 role='loading'>Loading...</h1>
 	}
 	return (
 		<div className='w-full h-screen flex  justify-center items-center'>
 			<div className='w-2/5 overflow-hidden bg-white shadow sm:rounded-lg '>
 				<div className='px-4 py-5 sm:px-6'>
-					<h3 className='text-base font-semibold leading-6 text-gray-900'>The task N {id}</h3>
+					<h3 role='number-of-tasks' className='text-base font-semibold leading-6 text-gray-900'>
+						The task N {id}
+					</h3>
 					<p className='mt-1 max-w-2xl text-sm text-gray-500'>Task details</p>
 				</div>
 				<div className='border-t border-gray-200'>
@@ -62,6 +64,7 @@ const TaskCard = (
 						<div className='bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
 							<dt className='text-sm font-medium text-gray-500'>Title</dt>
 							<input
+								role='input-task-title'
 								onChange={onChange}
 								name='title'
 								type='text'

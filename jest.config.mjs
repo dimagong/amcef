@@ -12,7 +12,8 @@ const config = {
 	// setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 	moduleNameMapper: {
 		"^@/api/(.*)$": "<rootDir>/src/api/services",
-		"^@/components/(.*)$": "<rootDir>/components/$1",
+		"^@/components/(.*)$": "<rootDir>/src/components/$1",
+		"^@/(.*)$": "<rootDir>/src/$1",
 		// '^@/pages/(.*)$': '<rootDir>/pages/$1',
 		// '^@/ui/(.*)$': '<rootDir>/ui/$1',
 		// '^@/api/(.*)$': '<rootDir>/api/$1',
