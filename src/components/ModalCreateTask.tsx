@@ -37,13 +37,15 @@ export const ModalCreateTask = (props: ModalCreateTaskProps) => {
 		},
 		validationSchema,
 		onSubmit: (values) => {
-			console.log("values", values)
 			const data = {
 				...values,
 				isCompleted: false,
 			}
-			createTaskApi(data)
-			onUpdateListTasks()
+			const upDataSumbit = async () => {
+				await createTaskApi(data)
+				await onUpdateListTasks()
+			}
+			upDataSumbit()
 		},
 	})
 
@@ -84,7 +86,7 @@ export const ModalCreateTask = (props: ModalCreateTaskProps) => {
 									Create new task
 								</h3>
 
-								<form className='space-y-6' onSubmit={formik.handleSubmit}>
+								<form role='form-role' className='space-y-6' onSubmit={formik.handleSubmit}>
 									<div>
 										<label
 											htmlFor='title'
@@ -93,6 +95,7 @@ export const ModalCreateTask = (props: ModalCreateTaskProps) => {
 											Title
 										</label>
 										<input
+											role='create-new-title'
 											onChange={formik.handleChange}
 											value={formik.values.title}
 											type='text'
