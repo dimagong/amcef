@@ -11,6 +11,7 @@ import { getTasksApi } from "../api/services"
 import TaskList from "./../components/TaskList"
 
 import { TaskPropsType } from "@/types"
+import { TaskProvider } from "@/hooks"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -28,7 +29,9 @@ const HomePage = ({ tasks }: HomeProps) => {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<main className={styles.main}>
-				<TaskList tasks={tasks} />
+				<TaskProvider value={tasks}>
+					<TaskList />
+				</TaskProvider>
 			</main>
 		</React.Profiler>
 	)

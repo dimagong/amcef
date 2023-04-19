@@ -12,6 +12,7 @@ import { ModalCreateTask } from "@/components/ModalCreateTask"
 import { TaskActionTypes } from "@/types/TaskActionTypes"
 import taskReducer from "@/utils/taskReducer"
 import { TaskPropsType } from "@/types"
+import { useContextTasks } from "@/hooks"
 
 export type TaskListType = {
 	tasks: TaskPropsType[]
@@ -19,7 +20,8 @@ export type TaskListType = {
 	isOpen: boolean
 }
 
-const TaskList: FC<Pick<TaskListType, "tasks">> = ({ tasks }) => {
+const TaskList = () => {
+	const tasks = useContextTasks()
 	const initialTaskState: TaskListType = { tasks: [], selectedTasks: [], isOpen: false }
 
 	const [state, dispatch] = useReducer(taskReducer, initialTaskState)
@@ -46,10 +48,10 @@ const TaskList: FC<Pick<TaskListType, "tasks">> = ({ tasks }) => {
 	}
 
 	const onSearch = (event: any) => {
-		if (event.target.value.length) {
-			const searchText = new RegExp(event.target.value, `gi`)
+		if (event.target.value.trim().length) {
+			const searchText = new RegExp(event.target.value)
 			const findСoincidence: TaskPropsType[] = []
-			;[...state.tasks].filter((task) => {
+			state.tasks.forEach((task) => {
 				for (const key in task) {
 					const finfMatch = task[key as keyof typeof task].toString().match(searchText)
 					if (finfMatch?.length) {
