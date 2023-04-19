@@ -7,7 +7,6 @@ const SearchTask = ({ onSearch }: any) => {
 				<svg
 					aria-hidden='true'
 					className='w-4 h-4 '
-					//text-gray-500 dark:text-gray-400
 					fill='none'
 					stroke='currentColor'
 					viewBox='0 0 24 24'
