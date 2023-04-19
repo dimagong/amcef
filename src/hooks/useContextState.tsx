@@ -1,19 +1,25 @@
 import { TaskListType } from "@/components/TaskList"
-import { TaskAction } from "@/types"
-import React, { createContext, useContext } from "react"
+import { TaskAction, TaskActionTypes } from "@/types"
+import React, { createContext, useContext, useEffect, useReducer } from "react"
+import { useContextTasks } from "./useContextTasks"
+import taskReducer from "@/utils/taskReducer"
 
 interface Props {
 	children: React.ReactNode
-	value: {
-		dispatch: React.Dispatch<TaskAction>
-		state: TaskListType
-	}
 }
 
 const StateContext = createContext<any>(undefined)
 
-const StateProvider = ({ children, value }: Props) => {
-	return <StateContext.Provider value={value}>{children}</StateContext.Provider>
+const StateProvider = ({ children }: Props) => {
+	const tasks = useContextTasks()
+	const initialTaskState: TaskListType = { tasks: [], selectedTasks: [], isOpen: false }
+
+	const [state, dispatch] = useReducer(taskReducer, initialTaskState)
+
+	useEffect(() => {
+		if (tasks?.length) dispatch({ type: TaskActionTypes.UPDATE_TASK, payload: tasks })
+	}, [tasks])
+	return <StateContext.Provider value={{ state, dispatch }}>{children}</StateContext.Provider>
 }
 
 const useContextState = () => {
