@@ -10,20 +10,15 @@ type ModalCreateTaskProps = {
 	onUpdateListTasks: () => any
 }
 
-interface FormValues {
-	title: string
-	description: string
-	deadline: string
-}
-
 const validationSchema = Yup.object({
-	title: Yup.string().required("please enter a title"),
-	description: Yup.string().required("please enter a description"),
+	title: Yup.string().required("please enter a title").trim().min(1).max(10),
+	description: Yup.string().required("please enter a description").trim().min(1).max(20),
 	deadline: Yup.date()
-		.typeError("please enter a valid date")
+		.typeError("please enter a valid date MM/DD/YYYY")
 		.required()
 		.min(moment().subtract(1, "day"), "The date is too early")
-		.max(moment().add(1, "month"), "The date is too late"),
+		.max(moment().add(1, "month"), "The date is too late. Not later than one month"),
+	assigned: Yup.string().required("please enter a name").trim().min(1).max(20),
 })
 
 export const ModalCreateTask = (props: ModalCreateTaskProps) => {
@@ -34,6 +29,7 @@ export const ModalCreateTask = (props: ModalCreateTaskProps) => {
 			title: "",
 			description: "",
 			deadline: "",
+			assigned: "",
 		},
 		validationSchema,
 		onSubmit: (values) => {
@@ -102,17 +98,19 @@ export const ModalCreateTask = (props: ModalCreateTaskProps) => {
 											name='title'
 											id='title'
 											className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
-											placeholder='title'
+											placeholder='...enter title'
 											required
 										/>
-										{formik.errors.title ? <div>{formik.errors.title}</div> : null}
+										{formik.errors.title ? (
+											<div style={{ color: `red` }}>{formik.errors.title}</div>
+										) : null}
 									</div>
 									<div>
 										<label
 											htmlFor='description'
 											className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
 										>
-											Your password
+											Task description
 										</label>
 										<input
 											onChange={formik.handleChange}
@@ -120,11 +118,13 @@ export const ModalCreateTask = (props: ModalCreateTaskProps) => {
 											type='text'
 											name='description'
 											id='description'
-											placeholder='description'
+											placeholder='...enter description'
 											className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
 											required
 										/>
-										{formik.errors.description ? <div>{formik.errors.description}</div> : null}
+										{formik.errors.description ? (
+											<div style={{ color: ` red` }}>{formik.errors.description}</div>
+										) : null}
 									</div>
 									<div>
 										<label
@@ -139,11 +139,34 @@ export const ModalCreateTask = (props: ModalCreateTaskProps) => {
 											type='text'
 											name='deadline'
 											id='deadline'
-											placeholder='deadline'
+											placeholder='...enter date in format MM/DD/YYYY'
 											className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
 											required
 										/>
-										{formik.errors.deadline ? <div>{formik.errors.deadline}</div> : null}
+										{formik.errors.deadline ? (
+											<div style={{ color: ` red` }}>{formik.errors.deadline}</div>
+										) : null}
+									</div>
+									<div>
+										<label
+											htmlFor='assigned'
+											className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
+										>
+											Assigned
+										</label>
+										<input
+											onChange={formik.handleChange}
+											value={formik.values.assigned}
+											type='text'
+											name='assigned'
+											id='assigned'
+											placeholder='...enter name'
+											className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
+											required
+										/>
+										{formik.errors.deadline ? (
+											<div style={{ color: ` red` }}>{formik.errors.deadline}</div>
+										) : null}
 									</div>
 
 									<button
