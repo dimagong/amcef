@@ -13,13 +13,6 @@ jest.mock("next/router", () => ({
 
 const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>
 
-// export const createTaskApi = (data: Partial<TaskPropsType>)  => {
-//     return serviceApi.post("/tasks", data)
-// }
-
-// export const  getTasksApi = () => {
-//     return serviceApi.get("/tasks")
-// }
 const server = setupServer(
 	rest.get("https://640314fd302b5d671c467d24.mockapi.io/api/pages", (req, res, ctx) => {
 		return res(
@@ -68,7 +61,7 @@ describe("TaskList", () => {
 	it("edit task, redirect to card task", () => {
 		const pushMock = jest.fn()
 		mockUseRouter.mockReturnValue({ push: pushMock } as any)
-		render(<TaskList tasks={InitialTasks} />)
+		render(<TaskList />)
 		const editButton = screen.getByText("Edit")
 		expect(editButton).toBeInTheDocument()
 		fireEvent.click(editButton)
@@ -80,10 +73,9 @@ describe("TaskList", () => {
 		const user = userEvent.setup()
 		const handleSubmit = jest.fn()
 		//open modal pop-up
-		render(<TaskList tasks={InitialTasks} />)
+		render(<TaskList />)
 		//buttonCreateTask
 		const createTaskButton = screen.getByRole("buttonCreateTask")
-		//const createTaskButton = screen.getByText("Create task")
 		expect(createTaskButton).toBeInTheDocument()
 		fireEvent.click(createTaskButton)
 		expect(screen.getByText("Create new task")).toBeInTheDocument()
@@ -91,30 +83,19 @@ describe("TaskList", () => {
 		//fill fields
 		const inputElementCreateTitle = screen.getByPlaceholderText("title")
 		await user.type(inputElementCreateTitle, "Title 01")
-		//fireEvent.change(inputElementCreateTitle, { target: { value: "Title 01" } })
 		expect(inputElementCreateTitle).toHaveValue("Title 01")
 
 		const inputElementCreateDecription = screen.getByPlaceholderText("description")
 		await user.type(inputElementCreateDecription, "Description 01")
-		//fireEvent.change(inputElementCreateDecription, { target: { value: "Description 01" } })
 		expect(inputElementCreateDecription).toHaveValue("Description 01")
 
 		const inputElementCreateDeadline = screen.getByPlaceholderText("deadline")
 		await user.type(inputElementCreateDeadline, "04.11.2023")
-		//fireEvent.change(inputElementCreateDeadline, { target: { value: "04.11.2023" } })
 		expect(inputElementCreateDeadline).toHaveValue("04.11.2023")
-
-		//click on 'crate task' button
 		const buttonCreateTask = screen.getByText("Create")
 		expect(buttonCreateTask).toBeInTheDocument()
 		await user.click(buttonCreateTask)
-		//fireEvent.click(buttonCreateTask)
-		//fireEvent.submit(buttonCreateTask)
-
 		await waitFor(() => expect(handleSubmit).toHaveBeenCalled())
-
-		// waitFor(() => upDataSumbit)
-		// expect(upDataSumbit).toHaveBeenCalled()
 
 		expect(screen.queryByText("Create new task")).not.toBeInTheDocument()
 		server.use(
@@ -145,13 +126,5 @@ describe("TaskList", () => {
 			})
 		)
 		waitFor(() => expect(screen.getByText("Title 111")).toBeInTheDocument())
-		//expect(buttonCreateTask).toBeInTheDocument()
-
-		//
-		// const createTaskButtonModal = screen.getByText("Create")
-		// expect(createTaskButtonModal).toBeInTheDocument()
-		//form-role
-		// const formElem = screen.getByRole("form-role")
-		// expect(formElem).toBeInTheDocument()
 	})
 })

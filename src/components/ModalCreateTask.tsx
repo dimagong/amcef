@@ -1,14 +1,16 @@
 import React from "react"
 import { useFormik } from "formik"
-import { createTaskApi } from "@/api/services"
+import { createTaskApi, getTasksApi } from "@/api/services"
 import * as Yup from "yup"
 import moment from "moment"
+import { TaskAction, TaskActionTypes } from "@/types"
+import { TaskListType } from "./TaskList"
+import { useContextState } from "@/hooks/useContextState"
 
-type ModalCreateTaskProps = {
-	open: boolean
-	onClose: () => any
-	onUpdateListTasks: () => any
-}
+// type ModalCreateTaskProps = {
+// 	dispatch: React.Dispatch<TaskAction>
+// 	state: TaskListType
+// }
 
 const validationSchema = Yup.object({
 	title: Yup.string().required("please enter a title").trim().min(1).max(10),
@@ -21,8 +23,24 @@ const validationSchema = Yup.object({
 	assigned: Yup.string().required("please enter a name").trim().min(1).max(20),
 })
 
-export const ModalCreateTask = (props: ModalCreateTaskProps) => {
-	const { open, onClose, onUpdateListTasks } = props
+export const ModalCreateTask = () => {
+	const { dispatch, state } = useContextState()
+	const open = state.isOpen
+
+	const onCloseModal = () => {
+		dispatch({ type: TaskActionTypes.OPEN_FORM_TASK, payload: false })
+	}
+
+	const onUpdateListTasks = async () => {
+		const res = await getTasksApi()
+		const tasks = res.data
+		dispatch({ type: TaskActionTypes.CREATE_TASK, payload: tasks })
+	}
+
+	const upDataSumbit = async (data: any) => {
+		await createTaskApi(data)
+		await onUpdateListTasks()
+	}
 
 	const formik = useFormik({
 		initialValues: {
@@ -37,11 +55,8 @@ export const ModalCreateTask = (props: ModalCreateTaskProps) => {
 				...values,
 				isCompleted: false,
 			}
-			const upDataSumbit = async () => {
-				await createTaskApi(data)
-				await onUpdateListTasks()
-			}
-			upDataSumbit()
+
+			upDataSumbit(data)
 		},
 	})
 
@@ -57,7 +72,7 @@ export const ModalCreateTask = (props: ModalCreateTaskProps) => {
 					<div className='relative w-full h-full max-w-md md:h-auto'>
 						<div className='relative bg-white rounded-lg shadow dark:bg-gray-700'>
 							<button
-								onClick={() => onClose()}
+								onClick={onCloseModal}
 								type='button'
 								className='absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white'
 								data-modal-hide='authentication-modal'
