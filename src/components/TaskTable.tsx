@@ -1,5 +1,6 @@
 import React, { FC } from "react"
 import classnames from "classnames"
+import moment from "moment"
 
 import Image from "next/image"
 
@@ -73,7 +74,7 @@ const TaskTable: FC<TaskListPropsType> = ({ tasks = [], onDeleteTask, onEditeTas
 									</div>
 								</th>
 								<td className='px-6 py-4'>{task?.description}</td>
-								<td className='px-6 py-4'>{new Date(task.deadline).toLocaleDateString()}</td>
+								<td className='px-6 py-4'>{moment(task.deadline).format("MMM DD, h:mm")}</td>
 								<td className='px-6 py-4'>
 									<div className='flex items-center'>
 										<div

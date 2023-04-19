@@ -26,12 +26,9 @@ const TaskList = () => {
 
 	const [state, dispatch] = useReducer(taskReducer, initialTaskState)
 	const router = useRouter()
-	console.log("state", state)
 
 	useEffect(() => {
-		if (tasks?.length) {
-			dispatch({ type: TaskActionTypes.UPDATE_TASK, payload: tasks })
-		}
+		if (tasks?.length) dispatch({ type: TaskActionTypes.UPDATE_TASK, payload: tasks })
 	}, [tasks])
 
 	const onSelectTackStatus = (e: React.ChangeEvent<any>) => {
@@ -49,7 +46,7 @@ const TaskList = () => {
 
 	const onSearch = (event: any) => {
 		if (event.target.value.trim().length) {
-			const searchText = new RegExp(event.target.value)
+			const searchText = new RegExp(event.target.value, "gi")
 			const findСoincidence: TaskPropsType[] = []
 			state.tasks.forEach((task) => {
 				for (const key in task) {
@@ -62,11 +59,14 @@ const TaskList = () => {
 			})
 			if (findСoincidence.length) {
 				dispatch({ type: TaskActionTypes.SEARCH_TASK, payload: findСoincidence })
+			} else {
+				dispatch({ type: TaskActionTypes.SEARCH_TASK, payload: [...state.tasks] })
 			}
 		} else {
 			dispatch({ type: TaskActionTypes.SEARCH_TASK, payload: [...state.tasks] })
 		}
 	}
+
 	const onDeleteTask = async (taskId: number) => {
 		await deleteTaskApi(taskId)
 		onUpdateListTasks()
@@ -86,7 +86,6 @@ const TaskList = () => {
 		const res = await getTasksApi()
 		const tasks = res.data
 		dispatch({ type: TaskActionTypes.CREATE_TASK, payload: tasks })
-		//return router.replace(router.asPath)
 	}
 	return (
 		<div className='w-full max-w-6xl h-screen flex flex-col justify-center overflow-y-hidden'>
