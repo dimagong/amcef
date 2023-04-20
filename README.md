@@ -6,6 +6,8 @@
 
 ### Next.js
 
+### React-Query
+
 ### Dynamic routing
 
 ### Formik
