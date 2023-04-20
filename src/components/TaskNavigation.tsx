@@ -1,8 +1,7 @@
-import { TaskAction, TaskActionTypes, TaskPropsType } from "@/types"
+import { TaskActionTypes, TaskPropsType } from "@/types"
 import CreateTask from "./CreateTask"
 import SearchTask from "./SearchTask"
 import SelectTask from "./SelectTask"
-import { TaskListType } from "./TaskList"
 import { useContextState } from "@/hooks/useContextState"
 
 export const TaskNavigation = () => {

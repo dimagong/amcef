@@ -1,7 +1,7 @@
 import React from "react"
+import { dehydrate, QueryClient } from "@tanstack/react-query"
 
 import Head from "next/head"
-import Image from "next/image"
 
 import { Inter } from "next/font/google"
 import styles from "@/styles/Home.module.css"
@@ -19,7 +19,7 @@ export type HomeProps = {
 	tasks: TaskPropsType[]
 }
 
-const HomePage = ({ tasks }: HomeProps) => {
+const HomePage = () => {
 	return (
 		<React.Profiler id='Home-page' onRender={() => console.log("Home page")}>
 			<Head>
@@ -29,7 +29,7 @@ const HomePage = ({ tasks }: HomeProps) => {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<main className={styles.main}>
-				<TaskProvider value={tasks}>
+				<TaskProvider>
 					<TaskList />
 				</TaskProvider>
 			</main>
@@ -40,21 +40,19 @@ const HomePage = ({ tasks }: HomeProps) => {
 export default HomePage
 
 export async function getServerSideProps() {
-	const res = await getTasksApi()
-	const tasks = res.data
+	const queryClient = new QueryClient()
+
+	await queryClient.prefetchQuery({
+		queryKey: ["tasks"],
+		queryFn: async () => {
+			const { data } = await getTasksApi()
+			return data
+		},
+	})
+
 	return {
 		props: {
-			tasks,
+			dehydratedState: dehydrate(queryClient),
 		},
 	}
 }
-
-// export async function getStaticProps() {
-// 	const res = await getTasksApi()
-// 	const tasks = res.data
-// 	return {
-// 		props: {
-// 			tasks,
-// 		},
-// 	}
-// }

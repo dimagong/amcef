@@ -11,13 +11,9 @@ import { UserIcon } from "@/assets/icons/UserIcon"
 import { TaskListType } from "./TaskList"
 import { deleteTaskApi, getTasksApi } from "@/api/services"
 import { Table } from "./Table"
-import { useContextTasks } from "@/hooks"
+import { useContextTasks, useTasksQuery } from "@/hooks"
 import { useContextState } from "@/hooks/useContextState"
-
-// export type TaskListPropsType = {
-// 	dispatch: React.Dispatch<TaskAction>
-// 	state: TaskListType
-// }
+import { useDeleteTaskQuery } from "@/hooks/useDeleteTaskQuery"
 
 const TaskTable = () => {
 	const { dispatch, state } = useContextState()
@@ -25,11 +21,16 @@ const TaskTable = () => {
 
 	const tasks = [...state.selectedTasks]
 
+	const { mutate } = useDeleteTaskQuery()
+	const { data: upTasks, refetch, isError } = useTasksQuery()
+
 	const onDeleteTask = async (taskId: number) => {
-		await deleteTaskApi(taskId)
-		const res = await getTasksApi()
-		const tasks = res.data
-		dispatch({ type: TaskActionTypes.CREATE_TASK, payload: tasks })
+		mutate(taskId, {
+			onSuccess: async () => {
+				await refetch()
+				dispatch({ type: TaskActionTypes.CREATE_TASK, payload: upTasks })
+			},
+		})
 	}
 
 	const onEditeTask = (taskId: number): void => {

@@ -1,8 +1,12 @@
-import React, { FC, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import { GetStaticProps, GetStaticPaths } from "next"
 import { getTaskByIDApi, getTasksApi, updateTaskApi } from "@/api/services"
 import moment from "moment"
+import { QueryClient, dehydrate } from "@tanstack/react-query"
+import { useTaskIDQuery } from "@/hooks"
+import { useTaskUpdateQuery } from "@/hooks/useTaskUpdateQuery"
+import { Loader } from "@/components/Loader"
 
 type TaskPropsType = {
 	id: number
@@ -24,14 +28,20 @@ export const initialTask = {
 	assigned: "No assigned",
 }
 
-const TaskCard = (
-	props: { task: TaskPropsType; hasError: boolean } = { task: initialTask, hasError: false }
-) => {
-	const { id } = props.task
+const TaskCard = () => {
 	const router = useRouter()
+	const id = typeof router.query?.id === "string" ? router.query.id : ""
+
+	const { data: task, isError, isLoading } = useTaskIDQuery(id)
+	const { mutate } = useTaskUpdateQuery()
+
 	const [taskDetails, upTaskDetails] = useState<TaskPropsType>(() => {
-		return { ...props.task }
+		return { ...task }
 	})
+
+	useEffect(() => {
+		if (task) upTaskDetails(task)
+	}, [task])
 
 	const onChange = (event: React.ChangeEvent<any>) => {
 		const { value, name } = event.target
@@ -43,13 +53,16 @@ const TaskCard = (
 	}
 
 	const onSaveChange = () => {
-		//taskDetails
-		updateTaskApi(taskDetails.id, { ...taskDetails })
+		mutate({ id, data: { ...taskDetails } })
 	}
 
-	if (router.isFallback) {
-		return <h1 role='loading'>Loading...</h1>
+	if (router.isFallback || isLoading) {
+		return <Loader />
 	}
+	if (isError) {
+		return <h1 role='loading'>Something went wrong...</h1>
+	}
+
 	return (
 		<div className='w-full h-screen flex  justify-center items-center'>
 			<div className='w-2/5 overflow-hidden bg-white shadow sm:rounded-lg '>
@@ -126,25 +139,25 @@ const TaskCard = (
 
 export default TaskCard
 
-export const getStaticPaths: GetStaticPaths = async () => {
-	const res = await getTasksApi()
-	const tasks = res.data
-	const paths = tasks.map((task: any) => ({
-		params: { id: task.id },
-	}))
-
-	// { fallback: false } means other routes should 404
-	return { paths, fallback: false }
-}
-
 export const getStaticProps: GetStaticProps = async (context) => {
-	const itemID = context.params?.id
-	const res = await getTaskByIDApi(itemID as string)
+	const id = context.params?.id as string
+	const queryClient = new QueryClient()
 
-	const task = res.data
+	await queryClient.prefetchQuery(["task", id], async () => {
+		const { data } = await getTaskByIDApi(id)
+		return data
+	})
+
 	return {
 		props: {
-			task,
+			dehydratedState: dehydrate(queryClient),
 		},
+	}
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+	return {
+		paths: [],
+		fallback: "blocking",
 	}
 }

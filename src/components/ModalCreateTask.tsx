@@ -5,6 +5,8 @@ import * as Yup from "yup"
 import moment from "moment"
 import { TaskActionTypes } from "@/types"
 import { useContextState } from "@/hooks/useContextState"
+import { useTasksQuery } from "@/hooks"
+import { useCreateTaskQuery } from "@/hooks/useCreateTaskQuery"
 
 const validationSchema = Yup.object({
 	title: Yup.string().required("please enter a title").trim().min(1).max(10),
@@ -18,6 +20,8 @@ const validationSchema = Yup.object({
 })
 
 export const ModalCreateTask = () => {
+	const { data: upTasks, refetch, isError } = useTasksQuery()
+	const { mutate } = useCreateTaskQuery()
 	const { dispatch, state } = useContextState()
 	const open = state.isOpen
 
@@ -26,14 +30,14 @@ export const ModalCreateTask = () => {
 	}
 
 	const onUpdateListTasks = async () => {
-		const res = await getTasksApi()
-		const tasks = res.data
-		dispatch({ type: TaskActionTypes.CREATE_TASK, payload: tasks })
+		await refetch()
+		if (!isError) dispatch({ type: TaskActionTypes.CREATE_TASK, payload: upTasks })
 	}
 
 	const upDataSumbit = async (data: any) => {
-		await createTaskApi(data)
-		await onUpdateListTasks()
+		mutate(data, {
+			onSuccess: () => onUpdateListTasks(),
+		})
 	}
 
 	const formik = useFormik({
