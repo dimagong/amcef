@@ -3,14 +3,8 @@ import { useFormik } from "formik"
 import { createTaskApi, getTasksApi } from "@/api/services"
 import * as Yup from "yup"
 import moment from "moment"
-import { TaskAction, TaskActionTypes } from "@/types"
-import { TaskListType } from "./TaskList"
+import { TaskActionTypes } from "@/types"
 import { useContextState } from "@/hooks/useContextState"
-
-// type ModalCreateTaskProps = {
-// 	dispatch: React.Dispatch<TaskAction>
-// 	state: TaskListType
-// }
 
 const validationSchema = Yup.object({
 	title: Yup.string().required("please enter a title").trim().min(1).max(10),
